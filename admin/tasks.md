@@ -5,19 +5,11 @@ Use the entries below as an example.
 
 ## Week 4
 
-Everyone: create application skeleton - meeting 14:00 17 Aug
+Everyone: create application skeleton - meeting 18:00 19 Aug
 
 ## Week 5
 
-Zhang San: Task 3 isPiecePlacementWellFormed - 21 Aug
-
-Jane Bloggs: Task 4 getNeighbours - 23 Aug
-
-Erika Mustermann: Task 6 getViablePiecePlacements - 24 Aug (depends on Task 3)
-
 ## Week 6
-
-...
 
 ## Mid-Semester Break
 
