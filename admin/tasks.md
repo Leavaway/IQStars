@@ -2,6 +2,7 @@
 
 For each task or sub-task, record who is responsible, the deadline, and any dependencies.
 Use the entries below as an example.
+group meeting time: Thu 18:00 - 19:00 
 
 ## Week 4
 
