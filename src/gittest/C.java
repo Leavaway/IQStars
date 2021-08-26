@@ -5,5 +5,4 @@ public class C {
     public String toString() {
         return super.toString();
     }
-
 }
