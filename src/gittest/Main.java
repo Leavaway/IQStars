@@ -2,5 +2,5 @@ package gittest;
 
 public class Main {
 
-    A a = new A();
+    A alice = new A();
 }
