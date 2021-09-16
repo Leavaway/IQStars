@@ -160,7 +160,7 @@ public class IQStars {
             if (str_len != 1) {
 
                 // e.g. string = "r012b033W", subst(i=0) = "r012"
-                // e.g. string = "Wr01r02", subst(i=2) = "r02"
+                // e.g. string = "Wr01r02", subst(i=4) = "r02"
                 String subst = gameStateString.substring(i, i+str_len);
 
                 // Check if the string well-formed
