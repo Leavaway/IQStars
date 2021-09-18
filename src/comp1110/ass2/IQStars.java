@@ -233,7 +233,192 @@ public class IQStars {
      * @return True if the game state represented by the string is valid
      */
     public static boolean isGameStateValid(String gameStateString) {
-        return false;  // FIXME Task 6 (D): determine whether a game state is valid
+        // FIXME Task 6 (D): determine whether a game state is valid
+        //check if string is well-formed
+        if (isGameStateStringWellFormed(gameStateString) != true){
+            return false;
+        }
+
+        //定义参数
+        char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
+        String[] piecesState = new String[7];
+        int piecesStatenumber = 0;
+        String[] wizardsState = new String[7];
+        int wizardsStatenumber = 0;
+        int breakNumber = 0;
+
+        Location[][] piecesLocations = new Location[7][];
+        Location[][] wizardsLocations = new Location[7][7];
+
+        //将不同颜色的piece和wizard分别提取出来并且分别存储
+        for (int i = 0;i < gameStateString.length();i++){
+            if (gameStateString.charAt(i) == 'W'){
+                breakNumber = i;
+                break;
+            }
+
+            for (int j = 0;j < colors.length;j++){
+                if (gameStateString.charAt(i) == colors[j]){
+                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i+1) + gameStateString.charAt(i+2) + gameStateString.charAt(i+3);
+                    piecesStatenumber += 1;
+                }
+            }
+        }
+
+        for (int i = breakNumber + 1;i < gameStateString.length();i++){
+            for (int j = 0;j < colors.length;j++){
+                if (gameStateString.charAt(i) == colors[j]){
+                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i+1) + gameStateString.charAt(i+2);
+                    wizardsStatenumber += 1;
+                }
+            }
+        }
+
+        //下面部分为通过一个有效的4位piece string获取该piece包含的棋盘中的所有位置
+        for (String i : piecesState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){piecesLocations[0] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'o'){piecesLocations[1] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'y'){piecesLocations[2] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'g'){piecesLocations[3] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'b'){piecesLocations[4] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'i'){piecesLocations[5] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'p'){piecesLocations[6] = new Piece(i).getPieceLocations();}
+            }
+        }
+
+        //下面部分为通过一个有效的3位wizard string获取wizards在棋盘中的所有位置
+        int rNumber = 0;
+        int oNumber = 0;
+        int yNumber = 0;
+        int gNumber = 0;
+        int bNumber = 0;
+        int iNumber = 0;
+        int pNumber = 0;
+        for (String i : wizardsState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){wizardsLocations[0][rNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));rNumber += 1;}
+                if (i.charAt(0) == 'o'){wizardsLocations[1][oNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));oNumber += 1;}
+                if (i.charAt(0) == 'y'){wizardsLocations[2][yNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));yNumber += 1;}
+                if (i.charAt(0) == 'g'){wizardsLocations[3][gNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));gNumber += 1;}
+                if (i.charAt(0) == 'b'){wizardsLocations[4][bNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));bNumber += 1;}
+                if (i.charAt(0) == 'i'){wizardsLocations[5][iNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));iNumber += 1;}
+                if (i.charAt(0) == 'p'){wizardsLocations[6][pNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));pNumber += 1;}
+            }
+        }
+
+        //check if pieces are on the board
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] != null){
+                for (int j = 0;j < 4;j++){
+                    if (piecesLocations[i][j] == null){
+                        break;
+                    }
+
+                    if (!piecesLocations[i][j].onBoard()){
+                        return false;
+                    }
+                }
+            }
+        }
+
+        //check overlap
+        Location[] checkLocation = new Location[26];
+        int checkLocationNumber = 0;
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] != null){
+                for (int j = 0;j < 4;j++){
+                    if (piecesLocations[i][j] == null){
+                        break;
+                    }
+                    checkLocation[checkLocationNumber] = piecesLocations[i][j];
+                    checkLocationNumber += 1;
+                }
+            }
+        }
+
+        for (int i = 0;i < checkLocationNumber;i++){
+            for (int j = i+1;j < checkLocationNumber;j++){
+                if (checkLocation[i].toString().equals(checkLocation[j].toString())){
+                    return false;
+                }
+            }
+        }
+
+        //check wizardsCovered and wizardsUncovered
+
+        int breaktheloop = 0;
+        for (int i = 0;i < 7;i++){
+            if (wizardsLocations[i] == null){
+                continue;
+            }
+            for (int j = 0;j < wizardsLocations[i].length;j++){
+                if (wizardsLocations[i][j] == null){
+                    continue;
+                }
+
+                for (int k = 0;k < 7;k++){
+                    if (piecesLocations[k] == null){
+                        continue;
+                    }
+
+                    if (k == i){
+                        for (int l = 0;l < piecesLocations[k].length;l++){
+                            if (piecesLocations[k][l] == null){
+                                continue;
+                            }
+
+                            if (piecesLocations[k][l].toString().equals(wizardsLocations[i][j].toString())){
+                                breaktheloop = 1;
+                                if (breaktheloop == 1){
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (k != i){
+                        for (int l = 0;l < piecesLocations[k].length;l++){
+                            if (piecesLocations[k][l] == null){
+                                continue;
+                            }
+
+                            if (piecesLocations[k][l].toString().equals(wizardsLocations[i][j].toString())){
+                                return false;
+                            }
+                        }
+
+                        breaktheloop = 2;
+                    }
+
+                    if (breaktheloop == 0){
+                        return false;
+                    }
+
+                    if (breaktheloop == 1){
+                        breaktheloop = 0;
+                        break;
+                    }
+
+                    if (breaktheloop == 2){
+                        breaktheloop = 0;
+                        continue;
+                    }
+                }
+            }
+        }
+
+
+        //check if wizards are on the board
+        for (int i = 0;i < wizardsStatenumber;i++){
+            for (int j = i + 1;j < wizardsStatenumber;j++){
+                if (wizardsState[i].charAt(1) == wizardsState[j].charAt(1) && wizardsState[i].charAt(2) == wizardsState[j].charAt(2)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
