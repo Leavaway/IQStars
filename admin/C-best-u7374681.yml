@@ -44,7 +44,7 @@ declaration: >-
 # you want to just submit classes):
 method:
    - makeGameState
-   - 
+#   -
 
 # sign *your* name and uid here
 name: Jiayong Zhu
