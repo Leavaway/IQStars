@@ -44,7 +44,7 @@ class:
 # you want to just submit classes):
 method:
    - isGameStateValid
-   - 
+#   -
 
 # sign *your* name and uid here
 name: Zichen Zhang
