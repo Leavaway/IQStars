@@ -12,12 +12,13 @@ public class Piece {
     //contains all locations that the piece occupies
     private Location[] pieceLocations = new Location[7];
 
-    //pieceLocations中有几个location
+    //means how many locations pieceLocations has in it
     int locationNumber;
 
-    //map将颜色和形状对应起来
+    //corresponding colors and shapes
     Map<Character,int[]> colorNumbers = new HashMap<>();
-    //在构造函数中使用此函数初始化colorNumbers
+
+    //use this function in the constructor to initialize colorNumbers
     public void setColorNumbers() {
         colorNumbers.put('r',new int[]{0,2,3});
         colorNumbers.put('o',new int[]{0,3});
@@ -28,7 +29,7 @@ public class Piece {
         colorNumbers.put('p',new int[]{0,3,4});
     }
 
-    //构造函数1
+    //constructor1
     public Piece(char color, int orientation, int x, int y){
         this.color = color;
         this.orientation = orientation;
@@ -38,7 +39,7 @@ public class Piece {
         setPieceLocations();
     }
 
-    //构造函数2
+    //constructor2
     public Piece(String pieceStateString){
         this.color = pieceStateString.charAt(0);
         this.orientation = Integer.parseInt(String.valueOf(pieceStateString.charAt(1)));
@@ -48,7 +49,14 @@ public class Piece {
         setPieceLocations();
     }
 
+    //get all the locations occupied by the piece by the information contained in the pieceStateString
+    /*The general idea is to regard pieces of the same color and different orientations as new pieces
+     obtained after rotating the piece(orientation = 0) around the origin point(the point at the upper left corner when orientation = 0).
+     Therefore, the coordinates of the origin, color, and orientation can be used to calculate all
+     locations the piece occupies.*/
     public void setPieceLocations(){
+
+        //convert the coordinates in pieceStateString to the coordinates of the origin point of the piece
         Location[][] allLocations = new Location[6][];
         int x1 = x;
         int y1 = y;
@@ -115,6 +123,8 @@ public class Piece {
                 if (orientation == 5){y = y + 1;}
             }
         }
+
+        //use the origin coordinates to calculate all the locations that may be occupied by pieces with different colors and different orientations
         if (y == 0||y == 2){
             allLocations = new Location[][]{
                     {new Location(x + 1, y), new Location(x, y + 1), new Location(x - 1, y + 1), new Location(x - 1, y), new Location(x - 1, y - 1), new Location(x, y - 1)},
@@ -136,19 +146,23 @@ public class Piece {
                     {new Location(x+2,y+2),new Location(x,y+3),new Location(x-2,y+1),new Location(x-2,y-2),new Location(x+1,y-3),new Location(x+3,y-1)}
             };
         }
-        
+
+        //identify which positions in allLocations belong to this piece through the color and orientation of the piece
         pieceLocations[0] = new Location(x,y);
         locationNumber = 1;
         for (int i : colorNumbers.get(color)){
             if (allLocations[i] != null){
+                //store the successfully identified locations into pieceLocations
                 pieceLocations[locationNumber] = allLocations[i][orientation];
                 locationNumber += 1;}
         }
 
+        //restore the coordinates in pieceStateString to the right state
         x = x1;
         y = y1;
     }
 
+    //get all locations occupied by this piece
     public Location[] getPieceLocations(){
         return pieceLocations;
     }

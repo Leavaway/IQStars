@@ -234,12 +234,12 @@ public class IQStars {
      */
     public static boolean isGameStateValid(String gameStateString) {
         // FIXME Task 6 (D): determine whether a game state is valid
-        //check if string is well-formed
-        if (isGameStateStringWellFormed(gameStateString) != true){
+        //check if gameStateString is well-formed
+        if (!isGameStateStringWellFormed(gameStateString)){
             return false;
         }
 
-        //定义参数
+        //define parameters
         char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
         String[] piecesState = new String[7];
         int piecesStatenumber = 0;
@@ -247,34 +247,35 @@ public class IQStars {
         int wizardsStatenumber = 0;
         int breakNumber = 0;
 
+        //store locations of pieces and wizards separately in these two
         Location[][] piecesLocations = new Location[7][];
         Location[][] wizardsLocations = new Location[7][7];
 
-        //将不同颜色的piece和wizard分别提取出来并且分别存储
+        //extract piece strings and wizard strings of different colors and store them separately
         for (int i = 0;i < gameStateString.length();i++){
             if (gameStateString.charAt(i) == 'W'){
                 breakNumber = i;
                 break;
             }
 
-            for (int j = 0;j < colors.length;j++){
-                if (gameStateString.charAt(i) == colors[j]){
-                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i+1) + gameStateString.charAt(i+2) + gameStateString.charAt(i+3);
+            for (char color : colors) {
+                if (gameStateString.charAt(i) == color) {
+                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2) + gameStateString.charAt(i + 3);
                     piecesStatenumber += 1;
                 }
             }
         }
 
         for (int i = breakNumber + 1;i < gameStateString.length();i++){
-            for (int j = 0;j < colors.length;j++){
-                if (gameStateString.charAt(i) == colors[j]){
-                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i+1) + gameStateString.charAt(i+2);
+            for (char color : colors) {
+                if (gameStateString.charAt(i) == color) {
+                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2);
                     wizardsStatenumber += 1;
                 }
             }
         }
 
-        //下面部分为通过一个有效的4位piece string获取该piece包含的棋盘中的所有位置
+        //obtain all the positions in the chessboard occupied by pieces by valid piece strings
         for (String i : piecesState){
             if (i != null){
                 if (i.charAt(0) == 'r'){piecesLocations[0] = new Piece(i).getPieceLocations();}
@@ -287,7 +288,7 @@ public class IQStars {
             }
         }
 
-        //下面部分为通过一个有效的3位wizard string获取wizards在棋盘中的所有位置
+        //get all the positions of the wizards in the board through valid wizard strings
         int rNumber = 0;
         int oNumber = 0;
         int yNumber = 0;
@@ -346,7 +347,6 @@ public class IQStars {
         }
 
         //check wizardsCovered and wizardsUncovered
-
         int breaktheloop = 0;
         for (int i = 0;i < 7;i++){
             if (wizardsLocations[i] == null){
@@ -370,9 +370,7 @@ public class IQStars {
 
                             if (piecesLocations[k][l].toString().equals(wizardsLocations[i][j].toString())){
                                 breaktheloop = 1;
-                                if (breaktheloop == 1){
-                                    break;
-                                }
+                                break;
                             }
                         }
                     }
@@ -402,7 +400,6 @@ public class IQStars {
 
                     if (breaktheloop == 2){
                         breaktheloop = 0;
-                        continue;
                     }
                 }
             }
