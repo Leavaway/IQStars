@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class IQStars {
@@ -241,9 +242,9 @@ public class IQStars {
 
         //define parameters
         char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
-        String[] piecesState = new String[7];
+//        String[] piecesState = new String[7];
         int piecesStatenumber = 0;
-        String[] wizardsState = new String[7];
+//        String[] wizardsState = new String[7];
         int wizardsStatenumber = 0;
         int breakNumber = 0;
 
@@ -252,29 +253,32 @@ public class IQStars {
         Location[][] wizardsLocations = new Location[7][7];
 
         //extract piece strings and wizard strings of different colors and store them separately
-        for (int i = 0;i < gameStateString.length();i++){
-            if (gameStateString.charAt(i) == 'W'){
-                breakNumber = i;
-                break;
-            }
-
-            for (char color : colors) {
-                if (gameStateString.charAt(i) == color) {
-                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2) + gameStateString.charAt(i + 3);
-                    piecesStatenumber += 1;
-                }
-            }
+//        for (int i = 0;i < gameStateString.length();i++){
+//            if (gameStateString.charAt(i) == 'W'){
+//                breakNumber = i;
+//                break;
+//            }
+//            for (char color : colors) {
+//                if (gameStateString.charAt(i) == color) {
+//                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2) + gameStateString.charAt(i + 3);
+//                    piecesStatenumber += 1;
+//                }
+//            }
+//        }
+        breakNumber = gameStateString.indexOf("W");
+        String[] wizardsState = extractW(gameStateString, breakNumber);
+        ArrayList<String> piecesState = extractP(gameStateString, breakNumber);
+        for (String s:wizardsState){
+            if(s!=null) wizardsStatenumber++;
         }
-
-        for (int i = breakNumber + 1;i < gameStateString.length();i++){
-            for (char color : colors) {
-                if (gameStateString.charAt(i) == color) {
-                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2);
-                    wizardsStatenumber += 1;
-                }
-            }
-        }
-
+//        for (int i = breakNumber + 1;i < gameStateString.length();i++){
+//            for (char color : colors) {
+//                if (gameStateString.charAt(i) == color) {
+////                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2);
+//                    wizardsStatenumber += 1;
+//                }
+//            }
+//        }
         //obtain all the positions in the chessboard occupied by pieces by valid piece strings
         for (String i : piecesState){
             if (i != null){
@@ -414,8 +418,34 @@ public class IQStars {
                 }
             }
         }
+//        for (int i = 0;i < wizardsStatenumber;i++){
+//            for (int j = i + 1;j < wizardsStatenumber;j++){
+//                if (wizardsState.get(i).charAt(1) == wizardsState.get(j).charAt(1) && wizardsState.get(i).charAt(2) == wizardsState.get(j).charAt(2)){
+//                    return false;
+//                }
+//            }
+//        }
+        return true;
+    }
+    public static boolean isGameWizardOnBoard(String gameStateString){
 
         return true;
+    }
+    public static ArrayList<String> extractP(String gameStateString, int breakNumber){
+        ArrayList<String> exp = new ArrayList<>();
+        for (int i = 0; i < breakNumber; i+=4){
+            exp.add(gameStateString.substring(i,i+4));
+        }
+        return exp;
+    }
+    public static String[] extractW(String gameStateString, int breakNumber){
+        String[] exw = new String[7];
+        int j = 0;
+        for (int i = breakNumber+1; i < gameStateString.length()-2; i+=3) {
+            exw[j] = gameStateString.substring(i,i+3);
+            j++;
+        }
+        return exw;
     }
 
     /**

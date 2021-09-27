@@ -91,6 +91,7 @@ public class Viewer extends Application {
         var x = 42;
         var y = 50;
         boolean isW = false;
+        boolean com = false;
 
         //Divide the gameStateString into different strings.
         ArrayList<String> pieces = new ArrayList<>();
@@ -99,11 +100,17 @@ public class Viewer extends Application {
             for (int i = 1; i <= gameStateString.length()-3; i+=3){
                 pieces.add(gameStateString.substring(i,i+3));
             }
-        }else {
+        }else if(gameStateString.length()<=29){
             for (int i = 0; i < gameStateString.length()-4; i+=4){
                 pieces.add(gameStateString.substring(i,i+4));
             }
+        }else if(gameStateString.length()>29){
+            com = true;
+            for (int i = 0; i < 25; i+=4){
+                pieces.add(gameStateString.substring(i,i+4));
+            }
         }
+
         //Iterate pieces and move the pieces.
         for(String s : pieces){
             //Consider the Wizard challenge.
@@ -251,6 +258,47 @@ public class Viewer extends Application {
                     rotateY.setPivotX(x+mov_x*159+80);
                     rotateY.setPivotY(y+y_pos*138+69);
                     rotateY.setAngle(60*rot);
+                }
+            }
+        }
+        if(com){
+            ArrayList<String> pieces2 = new ArrayList<>();
+            for (int i = 29; i < gameStateString.length()-3; i+=3){
+                pieces2.add(gameStateString.substring(i,i+3));
+            }
+            for(String s:pieces2){
+                double mov_x = Integer.parseInt(s.substring(1,2));
+                double y_pos = Integer.parseInt(s.substring(2));
+                if(y_pos%2!=0) mov_x+=0.5;
+                String p = s.substring(0,1);
+                if(p.equals("r")){
+                    imageViewRW.setImage(Wred);
+                    imageViewRW.setX(x+mov_x*159);
+                    imageViewRW.setY(y+y_pos*138);
+                }else if(p.equals("p")){
+                    imageViewPW.setImage(Wpink);
+                    imageViewPW.setX(x+mov_x*159);
+                    imageViewPW.setY(y+y_pos*138);
+                }else if(p.equals("y")){
+                    imageViewYW.setImage(Wyellow);
+                    imageViewYW.setX(x+mov_x*159);
+                    imageViewYW.setY(y+y_pos*138);
+                }else if(p.equals("b")){
+                    imageViewBW.setImage(Wblue);
+                    imageViewBW.setX(x+mov_x*159);
+                    imageViewBW.setY(y+y_pos*138);
+                }else if(p.equals("i")){
+                    imageViewIW.setImage(Windigo);
+                    imageViewIW.setX(x+mov_x*159);
+                    imageViewIW.setY(y+y_pos*138);
+                }else if(p.equals("o")){
+                    imageViewOW.setImage(Worange);
+                    imageViewOW.setX(x+mov_x*159);
+                    imageViewOW.setY(y+y_pos*138);
+                }else if(p.equals("g")){
+                    imageViewGW.setImage(Wgreen);
+                    imageViewGW.setX(x+mov_x*159);
+                    imageViewGW.setY(y+y_pos*138);
                 }
             }
         }
