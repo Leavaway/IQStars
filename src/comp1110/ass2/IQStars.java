@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class IQStars {
-
     /**
      * Determine whether a game string describing either a wizard or a piece
      * is well-formed according to the following criteria:
@@ -30,69 +29,64 @@ public class IQStars {
     static boolean isGameStringWellFormed(String gameString) {
         // FIXME Task 3 (P): determine whether a wizard or piece string is well-formed
 
-        char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
-        char[] numbers = {'0', '1', '2', '3', '4', '5', '6'};
-
         // Check Length
         if (gameString.length() != 3 && gameString.length() != 4) { return false;}
 
-        // Check color character
-        for (int i = 0; i < colors.length; i++) {
+        char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
+        char[] numbers = {'0', '1', '2', '3', '4', '5', '6'};
 
-            // Color valid
-            if (gameString.charAt(0) == colors[i]) { break;}
-            // Color not valid
-            if (i == colors.length - 1) {return false;}
+        char row_num;
+        boolean isWizard;
+        if (gameString.length() == 3) {
+            row_num = gameString.charAt(2);
+            isWizard = true;
+        }
+        else {
+            row_num = gameString.charAt(3);
+            isWizard = false;
         }
 
-        // The character now processing.
-        int now = 1;
-        // max - 1 = the maximum number of char[] numbers.
-        int max = 6;
-        if (gameString.charAt(0) == 'r' || gameString.charAt(0) == 'i') { max = 3;}
+        // Setting color parameters
+        // range = the maximum number of arr numbers
+        int range = 7;
+        char[] arr = colors;
 
-        // Check rotation value of a piece
-        if (gameString.length() == 4) {
+        for (int pos = 0; pos < gameString.length(); pos++) {
 
-            for (int i = 0; i < max; i++) {
+            if (pos != 0) arr = numbers;
 
-                // Number valid
-                if (gameString.charAt(now) == numbers[i]) { break;}
-                // Number not valid
-                if (i == max - 1) { return false;}
+            // Setting rotation parameters
+            if (gameString.length() - pos == 3 && !isWizard) {
+                if (gameString.charAt(0) == 'r' || gameString.charAt(0) == 'i') range = 3;
+                else range = 6;
             }
-            // Only piece have rotation value
-            now += 1;
+
+            // Setting column parameters
+            if (gameString.length() - pos == 2) {
+                if (row_num == '0' || row_num == '2') range = 7;
+                else range = 6;
+            }
+
+            // Setting row parameters
+            if (gameString.length() - pos == 1) {
+                range = 4;
+            }
+
+            // Given parameters, check if the character is valid.
+            if (!isCharacterValid(arr,range,gameString.charAt(pos))) return false;
         }
-
-        // Processing row
-        now += 1;
-        max = 4;
-        char row = gameString.charAt(now);
-
-        // Check row value
-        for (int i = 0; i < max; i++) {
-
-            // Row valid
-            if (row == numbers[i]) { break;}
-            // Row not valid
-            if (i == max - 1) { return false;}
-        }
-
-        // Check column value
-        if (row == '0' || row == '2') { max = 7;}
-        else { max = 6;}
-        now -= 1;
-        for (int i = 0; i < max; i++) {
-
-            // Column valid
-            if (gameString.charAt(now) == numbers[i]) { break;}
-            // Column not valid
-            if (i == max - 1) { return false;}
-        }
-        // All tests passed
         return true;
     }
+
+    static boolean isCharacterValid(char[] list, int range, char now) {
+
+        for (int i = 0; i < range; i++) {
+            if (now == list[i]) break;
+            if (i == range - 1) return false;
+        }
+        return true;
+    }
+
 
     /**
      * Determine whether a game state string is well-formed:
