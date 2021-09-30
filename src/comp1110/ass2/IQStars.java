@@ -322,7 +322,26 @@ public class IQStars {
         }
 
         //check overlap
-        Location[] checkLocation = new Location[26];
+        int[][] board = new int[4][];
+        board[0] = new int[7];
+        board[1] = new int[6];
+        board[2] = new int[7];
+        board[3] = new int[6];
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] != null){
+                for (int j = 0;j < 4;j++){
+                    if (piecesLocations[i][j] == null){
+                        break;
+                    }
+                    else if (board[piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] != 0){
+                        return false;
+                    }
+                    board[piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] = i+1;
+                }
+            }
+        }
+
+        /*Location[] checkLocation = new Location[26];
         int checkLocationNumber = 0;
         for (int i = 0;i < 7;i++){
             if (piecesLocations[i] != null){
@@ -342,7 +361,7 @@ public class IQStars {
                     return false;
                 }
             }
-        }
+        }*/
 
         //check wizardsCovered and wizardsUncovered
         int breaktheloop = 0;

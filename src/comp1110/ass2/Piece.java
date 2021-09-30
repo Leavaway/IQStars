@@ -166,4 +166,7 @@ public class Piece {
     public Location[] getPieceLocations(){
         return pieceLocations;
     }
+
+    //get color
+    public char getColor(){return color;}
 }
