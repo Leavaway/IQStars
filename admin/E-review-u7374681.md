@@ -4,7 +4,7 @@ Reviewed by: <Zhu Jiayong>, <u7374681>
 
 Reviewing code written by: <Zichen Zhang> <u7376167>
 
-Component: <IQStars.#309-342>
+Component: <https://gitlab.cecs.anu.edu.au/u7374681/comp1110-ass2-thu16m/-/blob/master/src/comp1110/ass2/IQStars.java#L309-342>
 
 ### Comments 
 1.The code uses two for loops and some if statements to check whether the piece is on the board and overlap.
