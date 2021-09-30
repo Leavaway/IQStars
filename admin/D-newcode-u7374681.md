@@ -4,7 +4,7 @@
 
 For Deliverable D2D, I contributed the following new statements of original code:
 
-- Added the methods:extractP and extractW(https://gitlab.cecs.anu.edu.au/u7374681/comp1110-ass2-thu16m/-/blob/master/src/comp1110/ass2/IQStars.java#L434-449) function to IQStars class
+- Added the methods:extractP and extractW(https://gitlab.cecs.anu.edu.au/u7374681/comp1110-ass2-thu16m/-/blob/master/src/comp1110/ass2/IQStars.java#L447-462) function to IQStars class
 - add some codes in IQStars to call these methods(https://gitlab.cecs.anu.edu.au/u7374681/comp1110-ass2-thu16m/-/blob/master/src/comp1110/ass2/IQStars.java#L268-273).
 - Write the test for the methods named IsExtractedWellTest(https://gitlab.cecs.anu.edu.au/u7374681/comp1110-ass2-thu16m/-/blob/master/tests/comp1110/ass2/IsExtractedWellTest.java).
 
