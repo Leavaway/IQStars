@@ -3,6 +3,7 @@ package comp1110.ass2;
 import org.junit.jupiter.api.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+//Authored by Jiayong Zhu.
 @Timeout(value = 1000, unit = MILLISECONDS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IsExtractedWellTest {

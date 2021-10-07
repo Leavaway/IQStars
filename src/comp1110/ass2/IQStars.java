@@ -444,6 +444,7 @@ public class IQStars {
 
         return true;
     }
+    //Authored by Jiayong Zhu.
     public static ArrayList<String> extractP(String gameStateString, int breakNumber){
         ArrayList<String> exp = new ArrayList<>();
         for (int i = 0; i < breakNumber; i+=4){
