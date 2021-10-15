@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -43,21 +44,21 @@ public class Viewer extends Application {
     void makeGameState(String gameStateString) {
 
         //Set the path to pictures of pieces and wizard pieces.
-        Image blankBoard = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\blankBoardNumbered.png");
-        Image red = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\redPiece.png");
-        Image pink = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\pinkPiece.png");
-        Image orange = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\orangePiece.png");
-        Image indigo = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\indigoPiece.png");
-        Image green = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\greenPiece.png");
-        Image blue = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\bluePiece.png");
-        Image yellow = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\yellowPiece.png");
-        Image Wred = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\red.png");
-        Image Wpink = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\pink.png");
-        Image Worange = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\orange.png");
-        Image Windigo = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\i.png");
-        Image Wgreen = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\green.png");
-        Image Wblue = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\blue.png");
-        Image Wyellow = new Image("file:E:\\IntelliJ IDEA Community Edition 2020.3.2\\comp1110-ass2-thu16m\\assets\\yellow.png");
+        Image blankBoard = new Image("file:assets\\blankBoardNumbered.png");
+        Image red = new Image("file:assets\\redPiece.png");
+        Image pink = new Image("file:assets\\pinkPiece.png");
+        Image orange = new Image("file:assets\\orangePiece.png");
+        Image indigo = new Image("file:assets\\indigoPiece.png");
+        Image green = new Image("file:assets\\greenPiece.png");
+        Image blue = new Image("file:assets\\bluePiece.png");
+        Image yellow = new Image("file:assets\\yellowPiece.png");
+        Image Wred = new Image("file:assets\\red.png");
+        Image Wpink = new Image("file:assets\\pink.png");
+        Image Worange = new Image("file:assets\\orange.png");
+        Image Windigo = new Image("file:assets\\i.png");
+        Image Wgreen = new Image("file:E:assets\\green.png");
+        Image Wblue = new Image("file:E:assets\\blue.png");
+        Image Wyellow = new Image("file:E:assets\\yellow.png");
 
         //Use the class Imageview to show different pieces and use Class Rotate to rotate the pieces.
         ImageView imageView = new ImageView();
