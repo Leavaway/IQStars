@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -12,6 +13,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import static javafx.scene.input.MouseButton.SECONDARY;
 
@@ -23,6 +26,10 @@ public class Board extends Application {
     private final Group root = new Group();
 
     void makePieceMove(){
+        /*
+        Use some mouseevents to let pieces move. And drag the piece by the mouse. And it will judge when the mouse
+        releases.
+         */
         final double[] pos={0,0};
         final boolean[] isF = {false,false,false,false,false,false,false};
         Image red = new Image("file:assets\\redPiece.png");
@@ -38,22 +45,16 @@ public class Board extends Application {
         imageViewR.getTransforms().addAll(rotateR);
         imageViewR.setImage(red);
         ImageView imageViewP = new ImageView();
-        Rotate rotateP = new Rotate();
         imageViewP.setImage(pink);
         ImageView imageViewO = new ImageView();
-        Rotate rotateO = new Rotate();
         imageViewO.setImage(orange);
         ImageView imageViewI = new ImageView();
-        Rotate rotateI = new Rotate();
         imageViewI.setImage(indigo);
         ImageView imageViewG = new ImageView();
-        Rotate rotateG = new Rotate();
         imageViewG.setImage(green);
         ImageView imageViewB = new ImageView();
-        Rotate rotateB = new Rotate();
         imageViewB.setImage(blue);
         ImageView imageViewY = new ImageView();
-        Rotate rotateY = new Rotate();
         imageViewY.setImage(yellow);
         imageViewB.setFitWidth(474.0/2);
         imageViewB.setFitHeight(275.0/2);
@@ -78,12 +79,13 @@ public class Board extends Application {
         ImageView imageViewt = new ImageView();
         imageViewt.setImage(test);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            /*
+            When mouse presses on the piece picture area, the piece will be added to root.
+             */
             @Override
             public void handle(MouseEvent mouseEvent) {
                 double mouseX = mouseEvent.getSceneX();
                 double mouseY = mouseEvent.getSceneY();
-                System.out.println(mouseEvent.getSceneX());
-                System.out.println(mouseEvent.getSceneY());
                 if(mouseX>1200.0-597&&mouseX<1350.0-597&&mouseY>10.0&&mouseY<130.0){
                     imageViewR.setX(mouseX);
                     imageViewR.setY(mouseY);
@@ -123,6 +125,9 @@ public class Board extends Application {
             }
         });
         root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            /*
+            Let the piece follow the mouse when drag.
+             */
             @Override
             public void handle(MouseEvent mouseEvent) {
                 double mouseX = mouseEvent.getSceneX();
@@ -154,50 +159,17 @@ public class Board extends Application {
         root.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-//                for (boolean s:isF
-//                ) {
-//                    System.out.println(s);
-//                }
-                System.out.println("----");
                 for (int i = 0; i < isF.length; i++) {
                     isF[i]=false;
                 }
             }
         });
-//        root.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                if(mouseEvent.getButton()==SECONDARY){
-//                    System.out.println('c');
-//                }
-//            }
-//        });
         root.setOnScroll(new EventHandler<ScrollEvent>() {
+            /*
+            Let the piece rotate when scroll.
+             */
             @Override
             public void handle(ScrollEvent scrollEvent) {
-//                rot(pos,imageViewR);
-//                if(pos[0]==0){
-//                    imageViewR.setRotate(60);
-//                    pos[0]++;
-//                }else if(pos[0]==1){
-//                    imageViewR.setRotate(120);
-//                    pos[0]++;
-//                }else if(pos[0]==2){
-//                    imageViewR.setRotate(180);
-//                    pos[0]++;
-//                }else if(pos[0]==3){
-//                    imageViewR.setRotate(240);
-//                    pos[0]++;
-//                }else if(pos[0]==4){
-//                    imageViewR.setRotate(300);
-//                    pos[0]++;
-//                }else if(pos[0]==5){
-//                    imageViewR.setRotate(360);
-//                    pos[0]++;
-//                }else if(pos[0]==6){
-//                    imageViewR.setRotate(60);
-//                    pos[0]-=5;
-//                }
                 if(isF[0]){
                     rot(pos,imageViewR);
                 }else if(isF[1]){
@@ -213,12 +185,14 @@ public class Board extends Application {
                 }else if(isF[6]){
                     rot(pos,imageViewY);
                 }
-                System.out.println("cool");
             }
         });
         root.getChildren().add(imageViewp);
     }
     public void rot(double[] pos,ImageView s){
+        /*
+        Let the piece rotate.
+         */
         if(pos[0]==0){
             s.setRotate(60);
             pos[0]++;
@@ -243,8 +217,10 @@ public class Board extends Application {
         }
     }
 
-    public void initial(){
-        String gameStateString = "o322p151W";
+    public void initial(String gameStateString){
+        /*
+        This part is similar to task 5, and some Height and width variables are changed.
+         */
         Image blankBoard = new Image("file:assets\\blankBoardNumbered.png");
         Image red = new Image("file:assets\\redPiece.png");
         Image pink = new Image("file:assets\\pinkPiece.png");
@@ -566,9 +542,204 @@ public class Board extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        /*
+        This method initial the scene and it uses several buttons to launch the game.
+         */
+        final String[] rand = new String[1];
         primaryStage.setTitle("IQ Stars");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
-        initial();
+        Button b1 = new Button("Starter");
+        Button b2 = new Button("Junior");
+        Button b3 = new Button("Expert");
+        Button b4 = new Button("Master");
+        Button b5 = new Button("Wizard");
+        b1.setLayoutX(60);
+        b1.setLayoutY(350);
+        b1.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                HashSet<String> Starter = new HashSet<>();
+                Starter.add("y322g262b100i010p340W");
+                Starter.add("r220y200g512b260p440W");
+                Starter.add("r101y250g000b020i013W");
+                Starter.add("r241o020y200b511i040W");
+                Starter.add("r030o010y400i033p202W");
+                Starter.add("o100y511g130i241p010W");
+                Starter.add("r240o302b121i260p242W");
+                Starter.add("r220y200g540b312p041W");
+                Starter.add("r101o232g262i000p231W");
+                Starter.add("o140y250g262b400p202W");
+                Starter.add("r042o100g110b450i020W");
+                Starter.add("r010o222g130b100i040W");
+                Starter.add("r101y040b420p151W");
+                Starter.add("y400b342i040p202W");
+                Starter.add("r022o302y000b030W");
+                Starter.add("r250o401b331i020W");
+                Starter.add("y521g110i040p020W");
+                Starter.add("r151g540i023p202W");
+                Starter.add("r020o100y352b312W");
+                Starter.add("o302y250g262i231W");
+                Starter.add("r010o302g262i100W");
+                Starter.add("r002y000b260p242W");
+                Starter.add("o302g262b400i040W");
+                Starter.add("r242g540b010p041W");
+                int index=(int)(Math.random()*Starter.size());
+                rand[0] = (String) Starter.toArray()[index];
+                initial(rand[0]);
+            }
+        });
+        b2.setLayoutX(60);
+        b2.setLayoutY(400);
+        b2.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                HashSet<String> Junior = new HashSet<>();
+                Junior.add("y002g020b040W");
+                Junior.add("r030b322i120W");
+                Junior.add("r010y250i231W");
+                Junior.add("r010y040p130W");
+                Junior.add("r020b400i040W");
+                Junior.add("r130y240b000W");
+                Junior.add("o151b332p202W");
+                Junior.add("r020o100y040W");
+                Junior.add("o302g262i010W");
+                Junior.add("r151g540b000W");
+                Junior.add("y040b000p301W");
+                Junior.add("o100b040i010W");
+                Junior.add("r002g252W");
+                Junior.add("o540g512W");
+                Junior.add("g000p341W");
+                Junior.add("o310b100W");
+                Junior.add("o321i260W");
+                Junior.add("g000i030W");
+                Junior.add("y322p331W");
+                Junior.add("g130p111W");
+                Junior.add("o540y000W");
+                Junior.add("g252p301W");
+                Junior.add("r130o140W");
+                Junior.add("b130i040W");
+                int index=(int)(Math.random()*Junior.size());
+                rand[0] = (String) Junior.toArray()[index];
+                initial(rand[0]);
+            }
+        });
+        b3.setLayoutX(60);
+        b3.setLayoutY(450);
+        b3.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                HashSet<String> Expert = new HashSet<>();
+                Expert.add("r212b450W");
+                Expert.add("r220i040W");
+                Expert.add("r030p301W");
+                Expert.add("o460i030W");
+                Expert.add("y141b450W");
+                Expert.add("r252g232W");
+                Expert.add("r151y200W");
+                Expert.add("y030b000W");
+                Expert.add("o322p151W");
+                Expert.add("b450i010W");
+                Expert.add("r002p222W");
+                Expert.add("o302y342W");
+                Expert.add("o460g232W");
+                Expert.add("o401i033W");
+                Expert.add("r021i010W");
+                Expert.add("o262p121W");
+                Expert.add("r222g540W");
+                Expert.add("b342p011W");
+                Expert.add("b531p202W");
+                Expert.add("i000p450W");
+                Expert.add("r240i010W");
+                Expert.add("g311i032W");
+                Expert.add("g231i003W");
+                Expert.add("o222y040W");
+                int index=(int)(Math.random()*Expert.size());
+                rand[0] = (String) Expert.toArray()[index];
+                initial(rand[0]);
+            }
+        });
+        b4.setLayoutX(60);
+        b4.setLayoutY(500);
+        b4.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                HashSet<String> Master = new HashSet<>();
+                Master.add("o522W");
+                Master.add("b011W");
+                Master.add("g240W");
+                Master.add("o240W");
+                Master.add("y130W");
+                Master.add("o520W");
+                Master.add("p411W");
+                Master.add("p421W");
+                Master.add("p320W");
+                Master.add("g250W");
+                Master.add("y421W");
+                Master.add("b520W");
+                Master.add("g521W");
+                Master.add("i250W");
+                Master.add("b021W");
+                Master.add("p211W");
+                Master.add("i131W");
+                Master.add("o531W");
+                Master.add("o211W");
+                Master.add("y220W");
+                Master.add("y230W");
+                Master.add("b521W");
+                Master.add("y032W");
+                int index=(int)(Math.random()*Master.size());
+                rand[0] = (String) Master.toArray()[index];
+                initial(rand[0]);
+            }
+        });
+        b5.setLayoutX(60);
+        b5.setLayoutY(550);
+        b5.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                HashSet<String> Wizard = new HashSet<>();
+                Wizard.add("Wr22o13b21");
+                Wizard.add("Wg11g32i00p43");
+                Wizard.add("Wg11b13p31");
+                Wizard.add("Wr10o30i00");
+                Wizard.add("Wr43o42i33");
+                Wizard.add("Wy50b30p10");
+                Wizard.add("Wo32g31p30");
+                Wizard.add("Wg62i30p02");
+                Wizard.add("Wr62g22i42");
+                Wizard.add("Wo53y13p31");
+                Wizard.add("Wo12p21");
+                Wizard.add("Wg01i23");
+                Wizard.add("Wy13b43i30");
+                Wizard.add("Wb32i21");
+                Wizard.add("Wy53p00");
+                Wizard.add("Wb01i51");
+                Wizard.add("Wo21y31");
+                Wizard.add("Wr40g20b60");
+                Wizard.add("Wy50b21i43");
+                Wizard.add("Wr40i12");
+                Wizard.add("Wy22i23");
+                Wizard.add("Wo52y32");
+                Wizard.add("Wr30y23");
+                Wizard.add("Wo40y20");
+                int index=(int)(Math.random()*Wizard.size());
+                rand[0] = (String) Wizard.toArray()[index];
+                initial(rand[0]);
+            }
+        });
+        Button b6 = new Button("Restart");
+        b6.setLayoutX(60);
+        b6.setLayoutY(600);
+        b6.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                root.getChildren().clear();
+                root.getChildren().addAll(b1,b2,b3,b4,b5,b6);
+                makePieceMove();
+                initial(rand[0]);
+            }
+        });
+        root.getChildren().addAll(b1,b2,b3,b4,b5,b6);
         makePieceMove();
         primaryStage.setScene(scene);
         primaryStage.show();
