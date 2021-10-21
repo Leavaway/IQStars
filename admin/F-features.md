@@ -3,11 +3,11 @@ of our project implements the following features:
 
 *(Remove those that are unimplemented)*
 
- - A simple placement viewer (Task 4)
- - A basic playable game
- - A basic playable game that snaps pieces to the board, allows rotation, and checks for validity (Task 7)
- - Generates simple challenges (Task 8)
- - Implements hints (Task 10)
+ x A simple placement viewer (Task 4)
+ x A basic playable game
+ x A basic playable game that snaps pieces to the board, allows rotation, and checks for validity (Task 7)
+ x Generates simple challenges (Task 8)
+ x Implements hints (Task 10)
  - Implements interesting starting challenges (Task 11)
 
 additional features...
