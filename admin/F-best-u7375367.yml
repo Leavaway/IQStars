@@ -1,0 +1,53 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+# Add as many "name+comment" entries as necessary
+# (or remove it altogether if you haven't collaborated with anyone)
+#collaboration:
+#  - name:
+#    comment: >-
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+#code:
+#  - comment:
+#    url:
+#    licence:
+
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+#class:
+#   -
+#   -
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - I edited make_control, to see if the placement is valid when relasing the mouse.
+   - However, when Jiayong Zhu submited task 9, my code for task 8 doesn't work, and I occationally rollback to try to get at least Cr marks, but I can't find my uncommited codes...
+   - Therefore, I don't have any submission code for this task. This is all my fault. My groupmates gives me 25 of contribution.
+   - I feel very sorry to both of my groupmates. If acceptable, please have a look at task 9 and 10, they worked hard on them.
+
+# sign *your* name and uid here
+name: Xiao Mu
+uid: u7375367
