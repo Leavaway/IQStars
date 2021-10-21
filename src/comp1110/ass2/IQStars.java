@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 
 public class IQStars {
     /**
@@ -229,6 +230,7 @@ public class IQStars {
      */
     public static boolean isGameStateValid(String gameStateString) {
         // FIXME Task 6 (D): determine whether a game state is valid
+        //Authored by Zichen Zhang.
         //check if gameStateString is well-formed
         if (!isGameStateStringWellFormed(gameStateString)){
             return false;
@@ -481,7 +483,199 @@ public class IQStars {
      * @return A set of all viable piece strings, or null if there are none.
      */
     static Set<String> getViablePieceStrings(String gameStateString, int col, int row) {
-        return null;  // FIXME Task 7 (P): determine the set of all viable piece strings given an existing game state
+        // FIXME Task 7 (P): determine the set of all viable piece strings given an existing game state
+        Set<String> allViablePieceStrings = new HashSet<String>();
+
+        //check if gameStateString is well-formed
+        if (!isGameStateValid(gameStateString)){
+            System.out.println("gameStateString isn‘t well-formed");
+            return null;
+        }
+
+        //define parameters
+        char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
+        String[] piecesState = new String[7];
+        int piecesStatenumber = 0;
+        String[] wizardsState = new String[7];
+        int wizardsStatenumber = 0;
+        int breakNumber = 0;
+
+        //store locations of pieces and wizards separately in these two
+        Location[][] piecesLocations = new Location[7][];
+        Location[][] wizardsLocations = new Location[7][7];
+
+        //extract piece strings and wizard strings of different colors and store them separately
+        for (int i = 0;i < gameStateString.length();i++){
+            if (gameStateString.charAt(i) == 'W'){
+                breakNumber = i;
+                break;
+            }
+            for (char color : colors) {
+                if (gameStateString.charAt(i) == color) {
+                    piecesState[piecesStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2) + gameStateString.charAt(i + 3);
+                    piecesStatenumber += 1;
+                }
+            }
+        }
+
+        breakNumber = gameStateString.indexOf("W");
+
+        for (String s:wizardsState){
+            if(s!=null) wizardsStatenumber++;
+        }
+        for (int i = breakNumber + 1;i < gameStateString.length();i++){
+            for (char color : colors) {
+                if (gameStateString.charAt(i) == color) {
+                    wizardsState[wizardsStatenumber] = "" + gameStateString.charAt(i) + gameStateString.charAt(i + 1) + gameStateString.charAt(i + 2);
+                    wizardsStatenumber += 1;
+                }
+            }
+        }
+
+        //obtain all the positions in the chessboard occupied by pieces by valid piece strings
+        for (String i : piecesState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){piecesLocations[0] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'o'){piecesLocations[1] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'y'){piecesLocations[2] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'g'){piecesLocations[3] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'b'){piecesLocations[4] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'i'){piecesLocations[5] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'p'){piecesLocations[6] = new Piece(i).getPieceLocations();}
+            }
+        }
+
+        //get all the positions of the wizards in the board through valid wizard strings
+        int rNumber = 0;
+        int oNumber = 0;
+        int yNumber = 0;
+        int gNumber = 0;
+        int bNumber = 0;
+        int iNumber = 0;
+        int pNumber = 0;
+        for (String i : wizardsState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){wizardsLocations[0][rNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));rNumber += 1;}
+                if (i.charAt(0) == 'o'){wizardsLocations[1][oNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));oNumber += 1;}
+                if (i.charAt(0) == 'y'){wizardsLocations[2][yNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));yNumber += 1;}
+                if (i.charAt(0) == 'g'){wizardsLocations[3][gNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));gNumber += 1;}
+                if (i.charAt(0) == 'b'){wizardsLocations[4][bNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));bNumber += 1;}
+                if (i.charAt(0) == 'i'){wizardsLocations[5][iNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));iNumber += 1;}
+                if (i.charAt(0) == 'p'){wizardsLocations[6][pNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));pNumber += 1;}
+            }
+        }
+
+        int[][] board = new int[4][];
+        board[0] = new int[7];
+        board[1] = new int[6];
+        board[2] = new int[7];
+        board[3] = new int[6];
+
+        for (int i = 0;i < 7;i++){
+            if (wizardsLocations[i] != null){
+                for (int j = 0;j < 7;j++){
+                    if (wizardsLocations[i][j] == null){
+                        break;
+                    }
+                    board[wizardsLocations[i][j].getY()][wizardsLocations[i][j].getX()] = -i-1;
+                }
+            }
+        }
+
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] != null){
+                for (int j = 0;j < 7;j++){
+                    if (piecesLocations[i][j] == null){
+                        break;
+                    }
+                    board[piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] = i+1;
+                }
+            }
+        }
+
+        ArrayList<Integer> availableColorCode = new ArrayList();
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] == null){
+                availableColorCode.add(i);
+            }
+        }
+
+        for (int i = 0;i <= row;i++){
+            int colMax = 0;
+            if (i == row){
+                colMax = col;
+            }
+
+            else if (i == 0||i == 2){
+                colMax = 6;
+            }
+
+            else if (i == 1||i == 3){
+                colMax = 5;
+            }
+
+            for (int j = 0;j <= colMax;j++){
+                if (board[i][j] > 0){
+                    continue;
+                }
+
+                for (int k :availableColorCode){
+                    int max = 6;
+                    if (k == 0||k == 5){
+                        max = 3;
+                    }
+                    for (int l = 0;l < max;l++){
+                        Piece newPiece = new Piece(colors[k],l,j,i);
+                        Location[] newLocations = newPiece.getPieceLocations();
+                        int breakYes = 0;
+                        int coverYes = 1;
+                        int wizardYes = 0;
+                        if (wizardsLocations[k][0] != null){
+                            wizardYes = 1;
+                        }
+                        for (Location m :newLocations){
+                            if (m == null){
+                                break;
+                            }
+                            if (!m.onBoard()){
+                                breakYes = 1;
+                                break;
+                            }
+
+                            if (board[m.getY()][m.getX()] > 0){
+                                breakYes = 1;
+                                break;
+                            }
+
+                            if (board[m.getY()][m.getX()] < 0){
+                                if (board[m.getY()][m.getX()] == - k - 1){
+                                    wizardYes = 0;
+                                }
+
+                                else {
+                                    breakYes = 1;
+                                    break;
+                                }
+                            }
+
+                            if (m.getX() == col&&m.getY() == row){
+                                coverYes = 0;
+                            }
+                        }
+
+                        if (breakYes == 0&&wizardYes == 0&&coverYes == 0){
+                            allViablePieceStrings.add("" + colors[k] + l + j + i);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (allViablePieceStrings.size() == 0){
+            return null;
+        }
+        return allViablePieceStrings;
     }
 
     /**
@@ -500,6 +694,148 @@ public class IQStars {
      * the challenge.
      */
     public static String getSolution(String challenge) {
-        return null;  // FIXME Task 10 (CR): determine the solution to the game, given a particular challenge
+        // FIXME Task 10 (CR): determine the solution to the game, given a particular challenge
+        //check if gameStateString is well-formed
+        if (!isGameStateValid(challenge)){
+            System.out.println("gameStateString isn‘t well-formed");
+            return null;
+        }
+
+        //define parameters
+        char[] colors = {'r', 'o', 'y', 'g', 'b', 'i', 'p'};
+        String[] piecesState = new String[7];
+        int piecesStatenumber = 0;
+        String[] wizardsState = new String[7];
+        int wizardsStatenumber = 0;
+        int breakNumber = 0;
+
+        //store locations of pieces and wizards separately in these two
+        Location[][] piecesLocations = new Location[7][];
+        Location[][] wizardsLocations = new Location[7][7];
+
+        //extract piece strings and wizard strings of different colors and store them separately
+        for (int i = 0;i < challenge.length();i++){
+            if (challenge.charAt(i) == 'W'){
+                breakNumber = i;
+                break;
+            }
+            for (char color : colors) {
+                if (challenge.charAt(i) == color) {
+                    piecesState[piecesStatenumber] = "" + challenge.charAt(i) + challenge.charAt(i + 1) + challenge.charAt(i + 2) + challenge.charAt(i + 3);
+                    piecesStatenumber += 1;
+                }
+            }
+        }
+
+        breakNumber = challenge.indexOf("W");
+
+        for (String s:wizardsState){
+            if(s!=null) wizardsStatenumber++;
+        }
+        for (int i = breakNumber + 1;i < challenge.length();i++){
+            for (char color : colors) {
+                if (challenge.charAt(i) == color) {
+                    wizardsState[wizardsStatenumber] = "" + challenge.charAt(i) + challenge.charAt(i + 1) + challenge.charAt(i + 2);
+                    wizardsStatenumber += 1;
+                }
+            }
+        }
+
+        //obtain all the positions in the chessboard occupied by pieces by valid piece strings
+        for (String i : piecesState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){piecesLocations[0] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'o'){piecesLocations[1] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'y'){piecesLocations[2] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'g'){piecesLocations[3] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'b'){piecesLocations[4] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'i'){piecesLocations[5] = new Piece(i).getPieceLocations();}
+                if (i.charAt(0) == 'p'){piecesLocations[6] = new Piece(i).getPieceLocations();}
+            }
+        }
+
+        //get all the positions of the wizards in the board through valid wizard strings
+        int rNumber = 0;
+        int oNumber = 0;
+        int yNumber = 0;
+        int gNumber = 0;
+        int bNumber = 0;
+        int iNumber = 0;
+        int pNumber = 0;
+        for (String i : wizardsState){
+            if (i != null){
+                if (i.charAt(0) == 'r'){wizardsLocations[0][rNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));rNumber += 1;}
+                if (i.charAt(0) == 'o'){wizardsLocations[1][oNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));oNumber += 1;}
+                if (i.charAt(0) == 'y'){wizardsLocations[2][yNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));yNumber += 1;}
+                if (i.charAt(0) == 'g'){wizardsLocations[3][gNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));gNumber += 1;}
+                if (i.charAt(0) == 'b'){wizardsLocations[4][bNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));bNumber += 1;}
+                if (i.charAt(0) == 'i'){wizardsLocations[5][iNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));iNumber += 1;}
+                if (i.charAt(0) == 'p'){wizardsLocations[6][pNumber] = new Location(Integer.parseInt(String.valueOf(i.charAt(1))),Integer.parseInt(String.valueOf(i.charAt(2))));pNumber += 1;}
+            }
+        }
+
+        int[][] board = new int[4][];
+        board[0] = new int[7];
+        board[1] = new int[6];
+        board[2] = new int[7];
+        board[3] = new int[6];
+
+        for (int i = 0;i < 7;i++){
+            if (wizardsLocations[i] != null){
+                for (int j = 0;j < 7;j++){
+                    if (wizardsLocations[i][j] == null){
+                        break;
+                    }
+                    board[wizardsLocations[i][j].getY()][wizardsLocations[i][j].getX()] = -i-1;
+                }
+            }
+        }
+
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] != null){
+                for (int j = 0;j < 7;j++){
+                    if (piecesLocations[i][j] == null){
+                        break;
+                    }
+                    board[piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] = i+1;
+                }
+            }
+        }
+
+        ArrayList<Integer> availableColorCode = new ArrayList();
+        for (int i = 0;i < 7;i++){
+            if (piecesLocations[i] == null){
+                availableColorCode.add(i);
+            }
+        }
+
+        String gameStateString = challenge;
+
+        for (int i = 0;i <= 3;i++){
+            int colMax = 0;
+            if (i == 0||i == 2){
+                colMax = 6;
+            }
+
+            else if (i == 1||i == 3){
+                colMax = 5;
+            }
+
+            for (int j = 0;j <= colMax;j++){
+                if (board[i][j] > 0){
+                    continue;
+                }
+
+                Set<String> allViablePieceStrings = getViablePieceStrings(gameStateString,j,i);
+                System.out.println(j +""+ i);
+                System.out.println(allViablePieceStrings);
+
+                if (allViablePieceStrings == null){
+                    break;
+                }
+            }
+        }
+
+        return gameStateString;
     }
 }

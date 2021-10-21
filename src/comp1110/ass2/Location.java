@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 public class Location {
+    //Authored by Zichen Zhang.
     private int x;
     private int y;
 

@@ -52,7 +52,6 @@ public class GameStringWellFormedTest {
         for (char row = '0'; row <= '2'; row += 2) {
             for (char col = '0'; col <= '6'; col++) {
                 test("r" + col + row, true);
-
                 test("p" + col + row, true);
             }
             test("r7" + row, false);

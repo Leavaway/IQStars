@@ -1,10 +1,13 @@
 package comp1110.ass2;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Piece {
+    //Authored by Zichen Zhang.
     char color;
+    int colorCode;
     int orientation;
     int x;
     int y;
@@ -169,4 +172,23 @@ public class Piece {
 
     //get color
     public char getColor(){return color;}
+
+    //get colorCode
+    public int getColorCode(){
+        if (color == 'r'){colorCode = 1;}
+        if (color == 'o'){colorCode = 2;}
+        if (color == 'y'){colorCode = 3;}
+        if (color == 'g'){colorCode = 4;}
+        if (color == 'b'){colorCode = 5;}
+        if (color == 'i'){colorCode = 6;}
+        if (color == 'p'){colorCode = 7;}
+        return colorCode;
+    }
+
+    //toString
+
+    @Override
+    public String toString() {
+        return "" + color + orientation + x + y;
+    }
 }
