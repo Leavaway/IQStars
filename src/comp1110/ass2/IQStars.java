@@ -484,6 +484,7 @@ public class IQStars {
      */
     static Set<String> getViablePieceStrings(String gameStateString, int col, int row) {
         // FIXME Task 7 (P): determine the set of all viable piece strings given an existing game state
+        //Authored by Zichen Zhang.
         Set<String> allViablePieceStrings = new HashSet<String>();
 
         //check if gameStateString is well-formed
@@ -600,6 +601,7 @@ public class IQStars {
             }
         }
 
+        //main part of task 7
         for (int i = 0;i <= row;i++){
             int colMax = 0;
             if (i == row){
@@ -797,7 +799,7 @@ public class IQStars {
                     if (piecesLocations[i][j] == null){
                         break;
                     }
-                    board[piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] = i+1;
+                    board[ piecesLocations[i][j].getY()][piecesLocations[i][j].getX()] = i+1;
                 }
             }
         }
@@ -809,82 +811,89 @@ public class IQStars {
             }
         }
 
+        //main part of task 10
         String gameStateString = challenge;
 
+        Set<String> piecesPossible0 = new HashSet<String>();
+        Set<String> piecesPossible1 = new HashSet<String>();
+        Set<String> piecesPossible2 = new HashSet<String>();
+        Set<String> piecesPossible3 = new HashSet<String>();
+        Set<String> piecesPossible4 = new HashSet<String>();
+        Set<String> piecesPossible5 = new HashSet<String>();
+        Set<String> piecesPossible6 = new HashSet<String>();
 
+        for (int i = 0;i <= 3;i++){
+            int colMax = 0;
+
+            if (i == 0||i == 2){
+                colMax = 6;
+            }
+
+            if (i == 1||i == 3){
+                colMax = 5;
+            }
+
+            for (int j = 0;j <= colMax;j++) {
+                if (board[i][j] > 0) {
+                    continue;
+                }
+
+                Set<String> allViablePieceStrings = getViablePieceStrings(gameStateString,j,i);
+                //System.out.println(j +""+ i);
+                //System.out.println(allViablePieceStrings);
+                for (String k :allViablePieceStrings){
+                    if (k.charAt(0) == 'r'){piecesPossible0.add(k);}
+                    if (k.charAt(0) == 'o'){piecesPossible1.add(k);}
+                    if (k.charAt(0) == 'y'){piecesPossible2.add(k);}
+                    if (k.charAt(0) == 'g'){piecesPossible3.add(k);}
+                    if (k.charAt(0) == 'b'){piecesPossible4.add(k);}
+                    if (k.charAt(0) == 'i'){piecesPossible5.add(k);}
+                    if (k.charAt(0) == 'p'){piecesPossible6.add(k);}
+                }
+            }
+        }
+
+        //System.out.println(piecesState[0]);
+        for (String k :piecesState){
+            if (k != null){
+                if (k.charAt(0) == 'r'){piecesPossible0.add(k);}
+                if (k.charAt(0) == 'o'){piecesPossible1.add(k);}
+                if (k.charAt(0) == 'y'){piecesPossible2.add(k);}
+                if (k.charAt(0) == 'g'){piecesPossible3.add(k);}
+                if (k.charAt(0) == 'b'){piecesPossible4.add(k);}
+                if (k.charAt(0) == 'i'){piecesPossible5.add(k);}
+                if (k.charAt(0) == 'p'){piecesPossible6.add(k);}
+            }
+        }
+
+        int breakYes = 0;
+        for (String h : piecesPossible0){
+            if (breakYes == 1){break;}
+            for (String i : piecesPossible1){
+                if (breakYes == 1){break;}
+                for (String j : piecesPossible2){
+                    if (breakYes == 1){break;}
+                    for (String k : piecesPossible3){
+                        if (breakYes == 1){break;}
+                        for (String l : piecesPossible4){
+                            if (breakYes == 1){break;}
+                            for (String m : piecesPossible5){
+                                if (breakYes == 1){break;}
+                                for (String n : piecesPossible6){
+                                    if (isGameStateValid(h+i+j+k+l+m+n+"W")){
+                                        System.out.println(h+i+j+k+l+m+n+"W");
+                                        gameStateString = h+i+j+k+l+m+n+"W";
+                                        breakYes = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         return gameStateString;
-    }
-
-    public static void putPieces(int[][] board,int row,String gameStateString){
-        if (row == 4){
-            return;
-        }
-
-        int[][] boardNow = board.clone();
-
-        int colMax = 0;
-        if (row == 0||row == 2){
-            colMax = 6;
-        }
-
-        else if (row == 1||row == 3){
-            colMax = 5;
-        }
-
-        for (int j = 0;j <= colMax;j++){
-            if (boardNow[row][j] > 0){
-                continue;
-            }
-
-            Set<String> allViablePieceStrings = getViablePieceStrings(gameStateString,j,row);
-            //System.out.println(j +""+ i);
-            //System.out.println(allViablePieceStrings);
-            for (String k :allViablePieceStrings){
-                for (int l = 0;l < gameStateString.length();l++){
-                    if (l == 0){
-                        if (isGameStateValid(k + gameStateString)){
-                            gameStateString = k + gameStateString;
-                            break;
-                        }
-                    }
-
-                    if (l > 0){
-                        if (isGameStateValid(gameStateString.substring(0,4*l) + k + gameStateString.substring(4*l,gameStateString.length() - 1))){
-                            gameStateString = gameStateString.substring(0,4*l) + k + gameStateString.substring(4*l,gameStateString.length() - 1);
-                            break;
-                        }
-                    }
-                }
-
-                Location[][] piecesLocation = new Location[7][];
-
-                if (k.charAt(0) == 'r'){piecesLocation[0] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'o'){piecesLocation[1] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'y'){piecesLocation[2] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'g'){piecesLocation[3] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'b'){piecesLocation[4] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'i'){piecesLocation[5] = new Piece(k).getPieceLocations();}
-                if (k.charAt(0) == 'p'){piecesLocation[6] = new Piece(k).getPieceLocations();}
-
-                for (int m = 0;m < 7;m++){
-                    if (piecesLocation[m] != null){
-                        for (int n = 0;n < 7;n++){
-                            if (piecesLocation[m][n] == null){
-                                break;
-                            }
-                            boardNow[piecesLocation[m][n].getY()][piecesLocation[m][n].getX()] = m+1;
-                        }
-                        break;
-                    }
-                }
-
-                putPieces(boardNow,row+1,gameStateString);
-            }
-
-            if (allViablePieceStrings == null){
-                break;
-            }
-        }
     }
 }
